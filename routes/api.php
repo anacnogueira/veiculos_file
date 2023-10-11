@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ModelController;
+use App\Http\Controllers\YearController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/brands', [BrandController::class, 'index']);
 Route::get('/models/{brandId}', [ModelController::class, 'index']);
-
+Route::get('/years/{brandId}/{modelId}', [YearController::class, 'index']);
 
