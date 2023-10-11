@@ -19,20 +19,20 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="models" class="col-sm-2 col-form-label">Modelo</label>
+                <label for="models" class="col-sm-2 col-form-label" disabled>Modelo</label>
                 <div class="col-sm-10">
                     <select class="form-select" id="models">                       
                     </select>
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="year" class="col-sm-2 col-form-label">Marca</label>
+                <label for="year" class="col-sm-2 col-form-label" disabled>Ano</label>
                 <div class="col-sm-10">
-                    <select class="form-select" id="year">
+                    <select class="form-select" id="years">
                     </select>
                 </div>
             </div>
-             <button id="send" type="submit" class="btn btn-primary" disabled>Pesquisar</button>
+             <button id="filter" type="submit" class="btn btn-primary" disabled>Pesquisar</button>
         </form>
         <br>
         <div class="d-grid gap-2 d-md-block">
@@ -43,20 +43,19 @@
         <table id="vehicles" class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Tipo</th>
                     <th scope="col">Valor</th>
                     <th scope="col">Marca</th>
                     <th scope="col">Modelo</th>
                     <th scope="col">Ano</th>
-                    <th scope="col">Comnustível</th>
+                    <th scope="col">Combustível</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider"></tbody>
         </table>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script   src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="{{ asset('js/filter.js') }}"></script>
     </body>
 </html>
