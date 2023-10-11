@@ -13,24 +13,21 @@
             <div class="row mb-3">
                 <label for="brands" class="col-sm-2 col-form-label">Marca</label>
                 <div class="col-sm-10">
-                    <select class="form-select" id="brands">
-                        <option selected>Selecione...</option>
+                    <select class="form-select" id="brands">                        
                     </select>
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="models" class="col-sm-2 col-form-label">Modelo</label>
                 <div class="col-sm-10">
-                    <select class="form-select" id="models" disabled>
-                        <option selected>Selecione...</option>
+                    <select class="form-select" id="models">                       
                     </select>
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="year" class="col-sm-2 col-form-label">Marca</label>
                 <div class="col-sm-10">
-                    <select class="form-select" id="year" disabled>
-                        <option selected>Selecione...</option>
+                    <select class="form-select" id="year">
                     </select>
                 </div>
             </div>
@@ -42,7 +39,7 @@
             <button class="btn btn-danger" type="button" id="pdf_export">Exportar PDF</button>
         </div>
 
-        <table id="result" class="table table-striped">
+        <table id="vehicles" class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Tipo</th>
@@ -57,5 +54,6 @@
         </table>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-</body>
+    <script src="{{ asset('js/filter.js') }}"></script>
+    </body>
 </html>
