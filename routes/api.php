@@ -26,4 +26,5 @@ Route::get('/brands', [BrandController::class, 'index']);
 Route::get('/models/{brandId}', [ModelController::class, 'index']);
 Route::get('/years/{brandId}/{modelId}', [YearController::class, 'index']);
 Route::get('/vehicles/{brandId}/{modelId}/{yearCode}', [VehicleController::class, 'index']);
+Route::post('/vehicles/exports/xlsx', [VehicleController::class, 'exportXlsx']);
 

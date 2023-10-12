@@ -91,4 +91,18 @@ $(document).ready(function () {
             $("#vehicles tbody").append(tblRow);
         });
     });
+
+    //Todo:
+    //1. Botão exportar XLSX
+    $("#xlsx_export").on("click", (e) => {
+        e.preventDefault();
+        // $.ajax({
+        //     url: `${url}/vehicles/export/xlsx`,
+        //     data: { content:
+        // }).done(function (data) {
+        //     return data;
+        // });
+    });
+    //2. Botão exportar PDF
+    $("#pdf_export").on("click", (e) => {});
 });
