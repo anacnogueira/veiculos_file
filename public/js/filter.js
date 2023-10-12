@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var url = `${environment.API_URL}`;
+    const urlBase = `${environment.API_URL}`;
 
     $(".form-select").select2({
         placeholder: "Selecione...",
@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     $("#brands").select2({
         ajax: {
-            url: `${url}/brands`,
+            url: `${urlBase}/brands`,
             processResults: function (data) {
                 return processResults(data);
             },
@@ -18,93 +18,48 @@ $(document).ready(function () {
     });
 
     $("#brands").on("select2:select", function (e) {
-        var data = e.params.data;
-        var brandId = data.codigo;
+        const data = e.params.data;
+        const brandId = data.codigo;
+        const url = `${urlBase}/models/${brandId}`;
 
-        $("#models").prop("disabled", false);
-        $("#models").select2({
-            ajax: {
-                url: `${url}/models/${brandId}`,
-                processResults: function (data) {
-                    return processResults(data);
-                },
-            },
-        });
+        brandsSelectOnChange(url);
     });
 
     $("#models").on("select2:select", function (e) {
-        var brandId = $("#brands").find(":selected")[0].value;
-        var modelId = e.params.data.codigo;
+        const brandId = $("#brands").find(":selected")[0].value;
+        const modelId = e.params.data.codigo;
+        const url = `${urlBase}/years/${brandId}/${modelId}`;
 
-        $("#years").prop("disabled", false);
-        $("#years").select2({
-            ajax: {
-                url: `${url}/years/${brandId}/${modelId}`,
-                processResults: function (data) {
-                    return processResults(data);
-                },
-            },
-        });
+        modelsSelectOnChange(url);
     });
 
     $("#years").on("select2:select", function (e) {
-        $("#filter").prop("disabled", false);
+        yearsSelectOnChange();
     });
 
     $("#filter").on("click", (e) => {
         e.preventDefault();
-        var brandId = $("#brands").find(":selected")[0].value;
-        var modelId = $("#models").find(":selected")[0].value;
-        var yearCode = $("#years").find(":selected")[0].value;
+        const brandId = $("#brands").find(":selected")[0].value;
+        const modelId = $("#models").find(":selected")[0].value;
+        const yearCode = $("#years").find(":selected")[0].value;
 
-        $.ajax({
-            url: `${url}/vehicles/${brandId}/${modelId}/${yearCode}`,
-        }).done(function (data) {
-            $("#vehicles tbody").html("");
-            var tblRow = `<tr><td>${data.Valor}</td>
-                <td>${data.Marca}</td>
-                <td>${data.Modelo}</td>
-                <td>${data.AnoModelo}</td>
-                <td>${data.Combustivel}</td>
-                </tr>`;
-            $("#vehicles tbody").append(tblRow);
-        });
+        const url = `${urlBase}/vehicles/${brandId}/${modelId}/${yearCode}`;
+
+        filter(url);
     });
 
     $("#xlsx_export").on("click", (e) => {
         e.preventDefault();
-        if (validateFilledTable()) {
-            const arraVehicles = getTableRowValuesIntoArray();
-
-            $.ajax({
-                url: `${url}/vehicles/export/xlsx`,
-                method: "POST",
-                xhrFields: {
-                    responseType: "blob",
-                },
-                data: { content: arraVehicles },
-            }).done(function (data) {
-                prepareDataToDownload(data, "xlsx");
-            });
-        }
+        const type = "xlsx";
+        const url = `${urlBase}/vehicles/export/${type}`;
+        exportData(url, type);
     });
 
     $("#pdf_export").on("click", (e) => {
         e.preventDefault();
-        if (validateFilledTable()) {
-            const arraVehicles = getTableRowValuesIntoArray();
-
-            $.ajax({
-                url: `${url}/vehicles/export/pdf`,
-                method: "POST",
-                xhrFields: {
-                    responseType: "blob",
-                },
-                data: { content: arraVehicles },
-            }).done(function (data) {
-                prepareDataToDownload(data, "pdf");
-            });
-        }
+        const type = "pdf";
+        const url = `${urlBase}/vehicles/export/${type}`;
+        exportData(url, type);
     });
 });
 
@@ -118,6 +73,66 @@ function processResults(data) {
     return {
         results: data,
     };
+}
+
+function brandsSelectOnChange(url) {
+    $("#models").prop("disabled", false);
+    $("#models").select2({
+        ajax: {
+            url,
+            processResults: function (data) {
+                return processResults(data);
+            },
+        },
+    });
+}
+
+function modelsSelectOnChange(url) {
+    $("#years").prop("disabled", false);
+    $("#years").select2({
+        ajax: {
+            url,
+            processResults: function (data) {
+                return processResults(data);
+            },
+        },
+    });
+}
+
+function yearsSelectOnChange() {
+    $("#filter").prop("disabled", false);
+}
+
+function filter(url) {
+    $.ajax({
+        url,
+    }).done(function (data) {
+        $("#vehicles tbody").html("");
+        var tblRow = `<tr><td>${data.Valor}</td>
+            <td>${data.Marca}</td>
+            <td>${data.Modelo}</td>
+            <td>${data.AnoModelo}</td>
+            <td>${data.Combustivel}</td>
+            </tr>`;
+        $("#vehicles tbody").append(tblRow);
+    });
+}
+
+function exportData(url, type) {
+    if (validateFilledTable()) {
+        const arraVehicles = getTableRowValuesIntoArray();
+
+        $.ajax({
+            url,
+            method: "POST",
+            xhrFields: {
+                responseType: "blob",
+            },
+            data: { content: arraVehicles },
+        }).done(function (data) {
+            prepareDataToDownload(data, type);
+        });
+    }
 }
 
 function validateFilledTable() {
