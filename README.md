@@ -6,9 +6,7 @@ Formulário para busca de veículos na tabela FIPE, permitindo a pesquisa por ma
 
 -   Faça o clone do repositório
 
-ˋˋˋ
-git clone https://github.com/anacnogueira/veiculos_fipe.git <nome_projeto>
-ˋˋˋ
+ˋ git clone https://github.com/anacnogueira/veiculos_fipe.git <nome_projeto>ˋ
 
 ** É necessário instalar o Docker antes da execuatr o projeto **
 [Como instalar o Docker](https://docs.docker.com/engine/install/)
