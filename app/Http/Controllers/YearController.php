@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DeividFortuna\Fipe\FipeCarros;
 use DeividFortuna\Fipe\IFipe;
 use Illuminate\Http\Request;
+use App\Services\Filter;
 
 class YearController extends Controller
 {
@@ -21,9 +22,7 @@ class YearController extends Controller
         }
 
         if($query) {
-            $years = array_filter($years, function($year) use($query){
-                return str_contains($year["nome"], $query);
-            });
+            $years = Filter::handler($years, $query);
         }
         
         return $years;

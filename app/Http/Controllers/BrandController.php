@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DeividFortuna\Fipe\FipeCarros;
 use DeividFortuna\Fipe\IFipe;
 use Illuminate\Http\Request;
+use App\Services\Filter;
 
 class BrandController extends Controller
 {
@@ -23,11 +24,8 @@ class BrandController extends Controller
         }
 
         if($query) {
-            $brands = array_filter($brands, function($brand) use($query){
-                return str_contains($brand["nome"], $query);
-            });
-        }
-        
+            $brands = Filter::handler($brands, $query);            
+        }       
         
         return $brands;
     }

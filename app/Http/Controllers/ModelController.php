@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DeividFortuna\Fipe\FipeCarros;
 use DeividFortuna\Fipe\IFipe;
 use Illuminate\Http\Request;
+use App\Services\Filter;
 
 class ModelController extends Controller
 {
@@ -21,9 +22,7 @@ class ModelController extends Controller
         }
 
         if($query) {
-            $models['modelos'] = array_filter($models['modelos'], function($model) use($query){
-                return str_contains($model["nome"], $query);
-            });
+            $models['modelos'] = Filter::handler($models['modelos'], $query);
         }
         
         return $models['modelos'];
