@@ -12,14 +12,7 @@ $(document).ready(function () {
         ajax: {
             url: `${url}/brands`,
             processResults: function (data) {
-                var data = $.map(data, function (obj) {
-                    obj.id = obj.codigo || obj.pk;
-                    obj.text = obj.nome || obj.name;
-                    return obj;
-                });
-                return {
-                    results: data,
-                };
+                return processResults(data);
             },
         },
     });
@@ -33,14 +26,7 @@ $(document).ready(function () {
             ajax: {
                 url: `${url}/models/${brandId}`,
                 processResults: function (data) {
-                    var data = $.map(data, function (obj) {
-                        obj.id = obj.codigo || obj.pk;
-                        obj.text = obj.nome || obj.name;
-                        return obj;
-                    });
-                    return {
-                        results: data,
-                    };
+                    return processResults(data);
                 },
             },
         });
@@ -55,14 +41,7 @@ $(document).ready(function () {
             ajax: {
                 url: `${url}/years/${brandId}/${modelId}`,
                 processResults: function (data) {
-                    var data = $.map(data, function (obj) {
-                        obj.id = obj.codigo || obj.pk;
-                        obj.text = obj.nome || obj.name;
-                        return obj;
-                    });
-                    return {
-                        results: data,
-                    };
+                    return processResults(data);
                 },
             },
         });
@@ -92,17 +71,93 @@ $(document).ready(function () {
         });
     });
 
-    //Todo:
-    //1. Botão exportar XLSX
     $("#xlsx_export").on("click", (e) => {
         e.preventDefault();
-        // $.ajax({
-        //     url: `${url}/vehicles/export/xlsx`,
-        //     data: { content:
-        // }).done(function (data) {
-        //     return data;
-        // });
+        if (validateFilledTable()) {
+            const arraVehicles = getTableRowValuesIntoArray();
+
+            $.ajax({
+                url: `${url}/vehicles/export/xlsx`,
+                method: "POST",
+                xhrFields: {
+                    responseType: "blob",
+                },
+                data: { content: arraVehicles },
+            }).done(function (data) {
+                prepareDataToDownload(data, "xlsx");
+            });
+        }
     });
-    //2. Botão exportar PDF
-    $("#pdf_export").on("click", (e) => {});
+
+    $("#pdf_export").on("click", (e) => {
+        e.preventDefault();
+        if (validateFilledTable()) {
+            const arraVehicles = getTableRowValuesIntoArray();
+
+            $.ajax({
+                url: `${url}/vehicles/export/pdf`,
+                method: "POST",
+                xhrFields: {
+                    responseType: "blob",
+                },
+                data: { content: arraVehicles },
+            }).done(function (data) {
+                prepareDataToDownload(data, "pdf");
+            });
+        }
+    });
 });
+
+function processResults(data) {
+    var data = $.map(data, function (obj) {
+        obj.id = obj.codigo || obj.pk;
+        obj.text = obj.nome || obj.name;
+        return obj;
+    });
+
+    return {
+        results: data,
+    };
+}
+
+function validateFilledTable() {
+    const tbody = $("#vehicles tbody").html();
+    if (!tbody) {
+        alert("Não é possivel exportar tabela vazia");
+        return false;
+    }
+
+    return true;
+}
+
+function getTableRowValuesIntoArray() {
+    let arraVehicles = Array();
+
+    $("#vehicles tr").each(function (i, row) {
+        arraVehicles[i] = Array();
+        $(this)
+            .children("th")
+            .each(function (j, columnHead) {
+                arraVehicles[i][j] = $(this).text();
+            });
+
+        $(this)
+            .children("td")
+            .each(function (k, columnBody) {
+                arraVehicles[i][k] = $(this).text();
+            });
+    });
+
+    return arraVehicles;
+}
+
+function prepareDataToDownload(data, fileExtension) {
+    var a = document.createElement("a");
+    var url = window.URL.createObjectURL(data);
+    a.href = url;
+    a.download = `vehicles.${fileExtension}`;
+    document.body.append(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+}
