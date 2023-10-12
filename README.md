@@ -4,24 +4,23 @@ Formulário para busca de veículos na tabela FIPE, permitindo a pesquisa por ma
 
 ## Como instalar
 
--   \*\* Faça o clone do repositório
+-   Faça o clone do repositório
 
-´´´
+ˋˋˋ
 git clone https://github.com/anacnogueira/veiculos_fipe.git <nome_projeto>
-
-```
+ˋˋˋ
 
 ** É necessário instalar o Docker antes da execuatr o projeto **
 [Como instalar o Docker](https://docs.docker.com/engine/install/)
 
-
-- ** Dentro da pasta do projeto, execute o seguinte comando no terminal para subir as imagens do porjeto
+-   \*\* Dentro da pasta do projeto, execute o seguinte comando no terminal para subir as imagens do porjeto
 
 ´´´
 docker run --rm --interactive --tty \
-    --volume $PWD:/app \
+ --volume $PWD:/app \
     --user $(id -u):$(id -g) \
-    composer install --ignore-platform-req=ext-gd
+ composer install --ignore-platform-req=ext-gd
+
 ```
 
 Rode o seguinte comando para execuatr o projeto
@@ -65,6 +64,8 @@ Depois que o alias do shell tiver sido configurado, você poderá executar coman
 sail up -d
 ´´´
 Esse comando faŕa o mesmo efeito que ´´´ docker-compose up -d ´´´
+
+```
 
 ```
 
