@@ -33,4 +33,15 @@ class VehicleController extends Controller
 
         return Excel::download($export, 'vehicles.xlsx');
     }
+
+    public function exportPdf(Request $request)
+    {
+        $content = $request->input("content");
+
+        $export = new VehiclesExport([
+           $content
+        ]);
+
+        return Excel::download($export, 'vehicles.pdf', \Maatwebsite\Excel\Excel::MPDF);
+    }
 }
