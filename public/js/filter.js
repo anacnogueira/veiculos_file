@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    var url = `${environment.API_URL}`;
+
     $(".form-select").select2({
         placeholder: "Selecione...",
     });
@@ -8,7 +10,7 @@ $(document).ready(function () {
 
     $("#brands").select2({
         ajax: {
-            url: "http://localhost/api/brands",
+            url: `${url}/brands`,
             processResults: function (data) {
                 var data = $.map(data, function (obj) {
                     obj.id = obj.codigo || obj.pk;
@@ -29,7 +31,7 @@ $(document).ready(function () {
         $("#models").prop("disabled", false);
         $("#models").select2({
             ajax: {
-                url: `http://localhost/api/models/${brandId}`,
+                url: `${url}/models/${brandId}`,
                 processResults: function (data) {
                     var data = $.map(data, function (obj) {
                         obj.id = obj.codigo || obj.pk;
@@ -51,7 +53,7 @@ $(document).ready(function () {
         $("#years").prop("disabled", false);
         $("#years").select2({
             ajax: {
-                url: `http://localhost/api/years/${brandId}/${modelId}`,
+                url: `${url}/years/${brandId}/${modelId}`,
                 processResults: function (data) {
                     var data = $.map(data, function (obj) {
                         obj.id = obj.codigo || obj.pk;
@@ -77,10 +79,10 @@ $(document).ready(function () {
         var yearCode = $("#years").find(":selected")[0].value;
 
         $.ajax({
-            url: `http://localhost/api/vehicles/${brandId}/${modelId}/${yearCode}`,
+            url: `${url}/vehicles/${brandId}/${modelId}/${yearCode}`,
         }).done(function (data) {
             $("#vehicles tbody").html("");
-            tblRow = `<tr><td>${data.Valor}</td>
+            var tblRow = `<tr><td>${data.Valor}</td>
                 <td>${data.Marca}</td>
                 <td>${data.Modelo}</td>
                 <td>${data.AnoModelo}</td>
